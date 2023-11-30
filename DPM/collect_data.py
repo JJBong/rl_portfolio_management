@@ -11,7 +11,7 @@ def get_stock_data(tickers, start_date, end_date):
     for ticker in tickers:
         gathered_ticker_data = list()
         data = yf.download(ticker, start=start_date, end=end_date)
-        date_time = data['Open'].keys().tolist()
+        date_time = data['Open'].keys().strftime('%Y-%m-%d %H:%M:%S')
         values = data[["High", "Low", "Open", "Close", "Volume", "Adj Close"]].values.tolist()
         for t, v in zip(date_time, values):
             v.insert(0, t)
@@ -44,9 +44,9 @@ def get_stock_data(tickers, start_date, end_date):
 
 if __name__ == '__main__':
     tickers = ['GOOG', 'NVDA', 'AMZN', 'AMD', 'QCOM', 'INTC', 'MSFT', 'AAPL', 'BIDU']
-    file_name = 'stock_no_change.pickle'  # 'stock_increase.pickle', 'stock_no_change.pickle', 'stock_decrease.pickle'
-    start_date = '2003-06-20' # '2006-10-20', '2003-06-20', '2001-02-20'
-    end_date = '2011-08-21' # '2013-11-21', '2011-08-21', '2009-05-21'
+    file_name = 'stock_decrease.pickle'  # 'stock_increase.pickle', 'stock_no_change.pickle', 'stock_decrease.pickle'
+    start_date = '2001-02-20' # '2006-10-20', '2003-06-20', '2001-02-20'
+    end_date = '2009-05-21' # '2013-11-21', '2011-08-21', '2009-05-21'
     data = get_stock_data(tickers, start_date, end_date)
     print(data.shape)
     print(data[0, 0, :])
