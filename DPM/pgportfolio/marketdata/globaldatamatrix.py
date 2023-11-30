@@ -13,19 +13,29 @@ import logging
 
 
 
-def get_global_panel_stock(start, end, period=300, features=('close',)):
+def get_global_panel_stock(start, end, period=300, features=('close',), stocks='stock_increase'):
     """
     :param start/end: linux timestamp in seconds
     :param period: time interval of each data access point
     :param features: tuple or list of the feature names
     :return a panel, [feature, coin, time]
     """
-    stock = np.load('pgportfolio/data/stock.npy', allow_pickle=True)
+    if stocks == 'stock_increase':
+        stock = np.load('pgportfolio/data/stock_increase.npy', allow_pickle=True)
+    elif stocks == 'stock_no_change':
+        stock = np.load('pgportfolio/data/stock_no_change.npy', allow_pickle=True)
+    elif stocks == 'stock_decrease':
+        stock = np.load('pgportfolio/data/stock_decrease.npy', allow_pickle=True)
+    else:
+        raise Exception('the given stocks is not there !!')
+
     coins = ['GOOG', 'NVDA', 'AMZN', 'AMD', 'QCOM', 'INTC', 'MSFT', 'AAPL', 'BIDU']
 
     logging.info("feature type list is %s" % str(features))
 
     stock_cols = ['date', 'high', 'low', 'open', 'close', 'volume', 'quoteVolume']
+
+    print(stock.shape)
 
     time_index = pd.to_datetime(stock[0, :, 0])
     print(time_index)
@@ -43,14 +53,14 @@ def get_global_panel_stock(start, end, period=300, features=('close',)):
 
     return panel
 
-def get_global_panel_btc(start, end, period=300, features=('close',), stocks=1):
-    if stocks == 1:
+def get_global_panel_btc(start, end, period=300, features=('close',), stocks="stock_increase"):
+    if stocks == 'btc_increase':
         panel = pd.read_pickle('pgportfolio/data/btc.pkl')
-    elif stocks == 2:
+    elif stocks == 'btc_increase':
         panel = pd.read_pickle('pgportfolio/data/crix_2.pkl')
-    elif stocks == 3:
+    elif stocks == 'btc_increase':
         panel = pd.read_pickle('pgportfolio/data/crix_3.pkl')
-    elif stocks == 4:
+    elif stocks == 'btc_increase':
         panel = pd.read_pickle('pgportfolio/data/crix_4.pkl')
     else:
         print("no file")

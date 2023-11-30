@@ -15,7 +15,7 @@ MIN_NUM_PERIOD = 3
 class DataMatrices:
     def __init__(self, start, end, period, batch_size=50, volume_average_days=30, buffer_bias_ratio=0,
                  market="poloniex", coin_filter=1, window_size=50, feature_number=3, test_portion=0.15,
-                 portion_reversed=False, online=False, is_permed=False, stock=False, smoothing_days=5):
+                 portion_reversed=False, online=False, is_permed=False, stock='', smoothing_days=5):
         """
         :param start: Unix time
         :param end: Unix time
@@ -42,11 +42,12 @@ class DataMatrices:
         self.__features = type_list
         self.feature_number = feature_number
         
-        if stock == 0:
+        if stock.find("stock") >= 0:
             self.__global_data = get_global_panel_stock(start,
                                                         self.__end,
                                                         period=period,
-                                                        features=type_list)
+                                                        features=type_list,
+                                                        stocks=stock)
         else:
             self.__global_data = get_global_panel_btc(start,
                                                     self.__end,

@@ -57,8 +57,9 @@ parser.add_argument('--test_portion', type=float, default=0.08,
 parser.add_argument('--smoothing_days', type=int, default=5,
                     help='smoothing days (default: 5)')
 
-parser.add_argument('--stocks', type=int, default=1,
-                    help='smoothing days (default: 1)')
+parser.add_argument('--stocks', type=str, default='stock_increase',
+                    help='stocks type: stock_increase, stock_no_change, stock_decrease, '
+                         'btc_increase, btc_no_change, btc_decrease')
 parser.add_argument('--buffer_biased', type=float, default=5e-5,
                     help='buffer_biased for sampling (default: 5e-5)') #stock 2e-4 #btc 5e-5
 
@@ -98,7 +99,7 @@ args.useCuda = not args.no_cuda
 device = torch.device("cuda:{}".format(args.cuda_no) if (torch.cuda.is_available() and args.useCuda) else "cpu")
 
 stock = args.stocks
-if stock ==0:
+if stock.find("stock") >= 0:
     action_n = 10 # stock 10 btc 11
     args.buffer_biased = 2e-4
     args.test_portion = 0.1605
