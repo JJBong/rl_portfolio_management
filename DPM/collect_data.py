@@ -1,3 +1,5 @@
+import pickle
+
 import yfinance as yf
 import numpy as np
 
@@ -42,11 +44,13 @@ def get_stock_data(tickers, start_date, end_date):
 
 if __name__ == '__main__':
     tickers = ['GOOG', 'NVDA', 'AMZN', 'AMD', 'QCOM', 'INTC', 'MSFT', 'AAPL', 'BIDU']
-    file_name = 'stock_decrease'  # 'stock_increase', 'stock_no_change', 'stock_decrease'
-    start_date = '2001-02-20' # '2006-10-20', '2003-06-20', '2001-02-20'
-    end_date = '2009-05-21' # '2013-11-21', '2011-08-21', '2009-05-21'
+    file_name = 'stock_no_change.pickle'  # 'stock_increase.pickle', 'stock_no_change.pickle', 'stock_decrease.pickle'
+    start_date = '2003-06-20' # '2006-10-20', '2003-06-20', '2001-02-20'
+    end_date = '2011-08-21' # '2013-11-21', '2011-08-21', '2009-05-21'
     data = get_stock_data(tickers, start_date, end_date)
     print(data.shape)
     print(data[0, 0, :])
     save_path = '/home/link/git/rl_portfolio_management/DPM/pgportfolio/data/' + file_name
-    np.save(save_path, data)
+    # np.save(save_path, data)
+    with open(save_path, 'wb') as f:
+        pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
